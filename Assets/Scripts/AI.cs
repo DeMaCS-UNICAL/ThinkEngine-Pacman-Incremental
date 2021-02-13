@@ -29,7 +29,6 @@ public class AI : MonoBehaviour {
 		// get current tile
 		Vector3 currentPos = new Vector3(transform.position.x + 0.499f, transform.position.y + 0.499f);
 		currentTile = tiles[manager.Index ((int)currentPos.x, (int)currentPos.y)];
-		
 		targetTile = GetTargetTilePerGhost();
 		
 		// get the next tile according to direction
