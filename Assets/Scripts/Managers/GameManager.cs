@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
     //--------------------------------------------------------
     // Game variables
-
+    public GameObject pacdotPrefab;
     public static int Level = 0;
     public static int lives = 3;
 

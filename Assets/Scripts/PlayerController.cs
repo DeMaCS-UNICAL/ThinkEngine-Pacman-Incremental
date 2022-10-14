@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     Vector2 _dest = Vector2.zero;
     Vector2 _dir = Vector2.zero;
     Vector2 _nextDir = Vector2.zero;
+    internal string aiDirection; 
 
     [Serializable]
     public class PointSprites
@@ -22,6 +23,12 @@ public class PlayerController : MonoBehaviour
 
     // script handles
     private GameGUINavigation GUINav;
+
+    internal bool MatchDirection()
+    {
+        return _nextDir.Equals(_dir);
+    }
+
     private GameManager GM;
     private ScoreManager SM;
 
@@ -107,11 +114,27 @@ public class PlayerController : MonoBehaviour
         GetComponent<Rigidbody2D>().MovePosition(p);
 
         // get the next direction from keyboard
-        if (Input.GetAxis("Horizontal") > 0) _nextDir = Vector2.right;
+        /*if (Input.GetAxis("Horizontal") > 0) _nextDir = Vector2.right;
         if (Input.GetAxis("Horizontal") < 0) _nextDir = -Vector2.right;
         if (Input.GetAxis("Vertical") > 0) _nextDir = Vector2.up;
-        if (Input.GetAxis("Vertical") < 0) _nextDir = -Vector2.up;
-
+        if (Input.GetAxis("Vertical") < 0) _nextDir = -Vector2.up;*/
+        switch (aiDirection)
+        {
+            case "right":
+                _nextDir = Vector2.right;
+                break;
+            case "left":
+                _nextDir = -Vector2.right;
+                break;
+            case "up":
+                _nextDir = Vector2.up;
+                break;
+            case "down":
+                _nextDir = -Vector2.up;
+                break;
+            default:
+                break;
+        }
         // if pacman is in the center of a tile
         if (Vector2.Distance(_dest, transform.position) < 0.00001f)
         {
