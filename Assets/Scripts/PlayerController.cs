@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     Vector2 _dest = Vector2.zero;
     Vector2 _dir = Vector2.zero;
     Vector2 _nextDir = Vector2.zero;
-    internal string aiDirection; 
+    internal string aiDirection=""; 
 
     [Serializable]
     public class PointSprites
@@ -24,15 +24,32 @@ public class PlayerController : MonoBehaviour
     // script handles
     private GameGUINavigation GUINav;
 
-    internal bool MatchDirection()
+    internal float NextX(int x)
     {
-        return _nextDir.Equals(_dir);
+        return x+(int)_nextDir.x;
+    }
+    internal float NextY(int y)
+    {
+        return y + (int)_nextDir.y;
+    }
+
+    internal bool AppliedOrNotApplicabile()
+    {
+        if (Valid(_dir))
+        {
+            return MatchingDirections();
+        }
+        if (!Valid(_nextDir))
+        {
+            return true;
+        }
+        return false;
     }
 
     private GameManager GM;
     private ScoreManager SM;
 
-    private bool _deadPlaying = false;
+    internal bool deadPlaying = false;
 
     // Use this for initialization
     void Start()
@@ -41,6 +58,11 @@ public class PlayerController : MonoBehaviour
         SM = GameObject.Find("Game Manager").GetComponent<ScoreManager>();
         GUINav = GameObject.Find("UI Manager").GetComponent<GameGUINavigation>();
         _dest = transform.position;
+    }
+
+    internal bool MatchingDirections()
+    {
+        return _nextDir.Equals(_dir);
     }
 
     // Update is called once per frame
@@ -54,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case GameManager.GameState.Dead:
-                if (!_deadPlaying)
+                if (!deadPlaying)
                     StartCoroutine("PlayDeadAnimation");
                 break;
         }
@@ -64,11 +86,12 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator PlayDeadAnimation()
     {
-        _deadPlaying = true;
+        deadPlaying = true;
+        aiDirection = "";
         GetComponent<Animator>().SetBool("Die", true);
         yield return new WaitForSeconds(1);
         GetComponent<Animator>().SetBool("Die", false);
-        _deadPlaying = false;
+        deadPlaying = false;
 
         if (GameManager.lives <= 0)
         {

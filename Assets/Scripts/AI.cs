@@ -105,7 +105,12 @@ public class AI : MonoBehaviour {
 
 		//Debug.Log (ghost.direction.x + " " + ghost.direction.y);
 		//Debug.Log (ghost.name + ": Next Tile (" + nextTile.x + ", " + nextTile.y + ")" );
-
+		if(nextTile==null || currentTile == null)
+        {
+			Debug.LogError("PREVENT EXCEPTION: "+gameObject.name+" currentPos: "+currentPos+" currentTile: "+currentTile+" nextTile: "+nextTile);
+			Debug.LogError(" currentPosInt: "+(int)currentPos.x+" " + (int)currentPos.y);
+			return;
+        }
 		if(nextTile.occupied || currentTile.isIntersection)
 		{
 			//---------------------
